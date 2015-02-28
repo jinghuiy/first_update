@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">GPA calculator (1 subject)</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="assessment_string">Assessment name</string>
+    <string name="marks_string">Marks</string>
+    <string name="total_marks_string">Total marks</string>
+    <string name="weightage_string">Weightage (%)</string>
+    <string name="title_activity_display">Display</string>
+
+</resources>

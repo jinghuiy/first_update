@@ -19,7 +19,7 @@ public class Display extends ActionBarActivity {
     private TextView mscoretext1;
     private TextView mscoretext2;
     private double mGPA;
-    private float mEarnedPercentage=0;
+    private double mEarnedPercentage=0;
     private float mTotalPercentage=0;
 
     @Override
@@ -34,7 +34,7 @@ public class Display extends ActionBarActivity {
         Intent intent = getIntent();
         mGPA = Double.parseDouble(intent.getStringExtra(GPADisplay));
         mTotalPercentage = Float.parseFloat(intent.getStringExtra(TotalDisplay));
-        mEarnedPercentage = Float.parseFloat(intent.getStringExtra(EarnedDisplay));
+        mEarnedPercentage = Double.parseDouble(intent.getStringExtra(EarnedDisplay));
 
         //deriving the total weightage as well as the weightage earned
 

@@ -3,6 +3,7 @@ package com.example.button_ben.gpacalculator1subject;
 import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -29,9 +30,8 @@ public class MainActivity extends ActionBarActivity {
     private float mWeightage;
     private double mGPA;
     private ArrayList<Summative> mSummative = new ArrayList<Summative>();
-    private Summative mAssignment = new Summative();
     private float mTotalPercentage = 0;
-    private float mEarnedPercentage = 0;
+    private double mEarnedPercentage = 0;
     private int mCounter = 0;
 
     @Override
@@ -75,10 +75,12 @@ public class MainActivity extends ActionBarActivity {
 
                     //mAssignment.setGPA(mGPA);
                     //adds values into the array list of summatives
+                    Summative mAssignment = new Summative();
                     mAssignment.setMark(mMarks);
                     mAssignment.setTotalMark(mTotalMarks);
                     mAssignment.setName(mAssessment);
                     mAssignment.setTestWeight(mWeightage);
+
                     mSummative.add(mAssignment);
 
                     //notifies tht user that the next set of values can be inputted
@@ -159,6 +161,8 @@ public class MainActivity extends ActionBarActivity {
                     intent.putExtra(Display.GPADisplay, mGPA + "");
                     intent.putExtra(Display.EarnedDisplay, mEarnedPercentage + "");
                     intent.putExtra(Display.TotalDisplay, mTotalPercentage + "");
+
+
                     //imports values
                     startActivity(intent);
                 }

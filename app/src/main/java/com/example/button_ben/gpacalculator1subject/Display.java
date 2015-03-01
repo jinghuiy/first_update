@@ -13,14 +13,14 @@ import java.util.List;
 
 public class Display extends ActionBarActivity {
 
-    public static final String GPADisplay = "com.example.button_ben.gpacalculator1subject.display";
+    public static final String GPADisplay = "com.example.button_ben.gpacalculator1subject.gpadisplay";
+    public static final String EarnedDisplay = "com.example.button_ben.gpacalculator1subject.earndisplay";
+    public static final String TotalDisplay = "com.example.button_ben.gpacalculator1subject.totaldisplay";
     private TextView mscoretext1;
     private TextView mscoretext2;
-    private int mCounter = 0;
     private double mGPA;
     private float mEarnedPercentage=0;
     private float mTotalPercentage=0;
-    private ArrayList<Summative> mSummative = new ArrayList<Summative>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,53 +30,14 @@ public class Display extends ActionBarActivity {
         mscoretext1 = (TextView)findViewById(R.id.text1);
         mscoretext2 = (TextView)findViewById(R.id.text2);
 
-        //getting the array list
+        //getting the imported values
         Intent intent = getIntent();
-        mSummative = intent.getParcelableArrayListExtra(GPADisplay);
+        mGPA = Double.parseDouble(intent.getStringExtra(GPADisplay));
+        mTotalPercentage = Float.parseFloat(intent.getStringExtra(TotalDisplay));
+        mEarnedPercentage = Float.parseFloat(intent.getStringExtra(EarnedDisplay));
 
         //deriving the total weightage as well as the weightage earned
-        while (mSummative.get(mCounter)!=null) {
-            mTotalPercentage+=mSummative.get(mCounter).getTestWeight();
-            mEarnedPercentage+= mSummative.get(mCounter).getMark()/mSummative.get(mCounter).getTotalMark()*mTotalPercentage;
-            mCounter++;
-        }
 
-        //finding out the GPA
-        if (mEarnedPercentage >= mTotalPercentage*0.8) {
-            mGPA = 4.0;
-        }
-
-        else if (mEarnedPercentage >= mTotalPercentage*0.7) {
-            mGPA = 3.6;
-        }
-
-        else if (mEarnedPercentage >= mTotalPercentage*0.65) {
-            mGPA = 3.2;
-        }
-
-        else if (mEarnedPercentage >= mTotalPercentage*0.60) {
-            mGPA = 2.8;
-        }
-
-        else if (mEarnedPercentage >= mTotalPercentage*0.55) {
-            mGPA = 2.4;
-        }
-
-        else if (mEarnedPercentage >= mTotalPercentage*0.5) {
-            mGPA = 2.0;
-        }
-
-        else if (mEarnedPercentage >= mTotalPercentage*0.45) {
-            mGPA = 1.6;
-        }
-
-        else if (mEarnedPercentage >= mTotalPercentage*0.4) {
-            mGPA = 1.2;
-        }
-
-        else {
-            mGPA = 0.8;
-        }
 
         //Displaying the results
         mscoretext1.setText("Your GPA for this subject is: " + mGPA + ".");

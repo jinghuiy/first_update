@@ -6,7 +6,7 @@ import android.os.Parcelable;
 /**
  * Created by Button_ben on 2/24/2015.
  */
-public class Summative implements Parcelable{
+public class Summative {
     //declaring components of the class
     private String mSummativeName;
     private float mTotalMark;
@@ -28,32 +28,4 @@ public class Summative implements Parcelable{
     public void setTestWeight(float testWeight){ mTestWeight = testWeight;}
     //public void setGPA(double GPA) {mGPA = GPA;}
 
-
-    private Summative(Parcel in){
-        mSummativeName = in.readString();
-        mTotalMark = in.readFloat();
-        mMark = in.readFloat();
-        mTestWeight = in.readFloat();
-    }
-
-    public void writeToParcel(Parcel out, int flags) {
-        out.writeString(mSummativeName);
-        out.writeFloat(mTotalMark);
-        out.writeFloat(mMark);
-        out.writeFloat(mTestWeight);
-    }
-
-    public int describeContents() {
-        return 0;
-    }
-
-    public static final Parcelable.Creator<Summative> CREATOR = new Parcelable.Creator<Summative>() {
-        public Summative createFromParcel(Parcel in) {
-            return new Summative(in);
-        }
-
-        public Summative[] newArray(int size) {
-            return new Summative[size];
-        }
-    };
 }

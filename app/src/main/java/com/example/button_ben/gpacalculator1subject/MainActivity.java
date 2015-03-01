@@ -27,9 +27,12 @@ public class MainActivity extends ActionBarActivity {
     private float mTotalMarks;
     private String mAssessment;
     private float mWeightage;
-    //private double mGPA;
+    private double mGPA;
     private ArrayList<Summative> mSummative = new ArrayList<Summative>();
-    private Summative mAssignment;
+    private Summative mAssignment = new Summative();
+    private float mTotalPercentage = 0;
+    private float mEarnedPercentage = 0;
+    private int mCounter = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,12 +51,18 @@ public class MainActivity extends ActionBarActivity {
             public void onClick(View v) {
                 //Checks if all fields have been filled
                 if (mMarksText.getText().toString() ==  "" || mTotalMarksText.getText().toString() == "" || mAssessmentText.getText().toString() == "" || mWeightageText.getText().toString() == "") {
+                    if (mToastedBread!=null){
+                        mToastedBread.cancel();
+                    }
                     mToastedBread = Toast.makeText(MainActivity.this, "Not all fields have been filled. Please check.", Toast.LENGTH_LONG);
                     mToastedBread.show();
                 }
                 //Checks for errors in the inputted total marks
                 else if (Float.parseFloat(mTotalMarksText.getText().toString()) <= 0){
-                    mToastedBread = Toast.makeText(MainActivity.this, "The total marks cannot be less than 0. Please check.", Toast.LENGTH_LONG);
+                    if (mToastedBread!=null){
+                        mToastedBread.cancel();
+                    }
+                    mToastedBread = Toast.makeText(MainActivity.this, "The total marks cannot be 0 or less than 0. Please check.", Toast.LENGTH_LONG);
                     mToastedBread.show();
                 }
 
@@ -65,15 +74,20 @@ public class MainActivity extends ActionBarActivity {
                     mWeightage = Float.parseFloat(mWeightageText.getText().toString());
 
                     //mAssignment.setGPA(mGPA);
-                    //adds values into the array list to be imported over to the next activity
+                    //adds values into the array list of summatives
                     mAssignment.setMark(mMarks);
                     mAssignment.setTotalMark(mTotalMarks);
                     mAssignment.setName(mAssessment);
                     mAssignment.setTestWeight(mWeightage);
                     mSummative.add(mAssignment);
+
                     //notifies tht user that the next set of values can be inputted
+                    if (mToastedBread!=null){
+                        mToastedBread.cancel();
+                    }
                     mToastedBread = Toast.makeText(MainActivity.this, "Details inputted. Please input next results or click 'Calculate'.", Toast.LENGTH_LONG);
                     mToastedBread.show();
+
                     //resets the EditTexts for next input
                     mAssessmentText.setText("");
                     mMarksText.setText("");
@@ -86,11 +100,68 @@ public class MainActivity extends ActionBarActivity {
         mGoButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //sets the array list to be imported
-                Intent intent = new Intent(MainActivity.this, Display.class);
-                intent.putParcelableArrayListExtra(Display.GPADisplay, mSummative);
-                //imports array list
-                startActivity(intent);
+                //Checks if user has inputted anything
+                if (mSummative.size() == 0) {
+                    if (mToastedBread!=null) {
+                        mToastedBread.cancel();
+                    }
+                    mToastedBread = Toast.makeText(MainActivity.this, "You have not inputted anything.", Toast.LENGTH_LONG);
+                    mToastedBread.show();
+                }
+
+                else {
+                    while (mCounter < mSummative.size()) {
+                        mTotalPercentage += mSummative.get(mCounter).getTestWeight();
+                        mEarnedPercentage += (mSummative.get(mCounter).getMark() / mSummative.get(mCounter).getTotalMark()) * mSummative.get(mCounter).getTestWeight();
+                        mCounter++;
+                    }
+
+                    //finding out the GPA
+                    if (mEarnedPercentage >= mTotalPercentage * 0.8) {
+                        mGPA = 4.0;
+                    }
+
+                    else if (mEarnedPercentage >= mTotalPercentage * 0.7) {
+                        mGPA = 3.6;
+                    }
+
+                    else if (mEarnedPercentage >= mTotalPercentage * 0.65) {
+                        mGPA = 3.2;
+                    }
+
+                    else if (mEarnedPercentage >= mTotalPercentage * 0.60) {
+                        mGPA = 2.8;
+                    }
+
+                    else if (mEarnedPercentage >= mTotalPercentage * 0.55) {
+                        mGPA = 2.4;
+                    }
+
+                    else if (mEarnedPercentage >= mTotalPercentage * 0.5) {
+                        mGPA = 2.0;
+                    }
+
+                    else if (mEarnedPercentage >= mTotalPercentage * 0.45) {
+                        mGPA = 1.6;
+                    }
+
+                    else if (mEarnedPercentage >= mTotalPercentage * 0.4) {
+                        mGPA = 1.2;
+                    }
+
+                    else {
+                        mGPA = 0.8;
+                    }
+
+                    //sets the values to be imported
+                    Intent intent = new Intent(MainActivity.this, Display.class);
+
+                    intent.putExtra(Display.GPADisplay, mGPA + "");
+                    intent.putExtra(Display.EarnedDisplay, mEarnedPercentage + "");
+                    intent.putExtra(Display.TotalDisplay, mTotalPercentage + "");
+                    //imports values
+                    startActivity(intent);
+                }
             }
         });
 
